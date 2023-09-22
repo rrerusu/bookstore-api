@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="getBooks" doc:id="10f71402-6e9c-41bc-94c3-475f8f0afb7e" >
+		<http:listener doc:name="Listener" doc:id="9b10ca7a-dd2a-4012-843e-3ac3e4e9c29a" config-ref="bookstore-api-httpListenerConfig" path="/books"/>
+		<db:select doc:name="Select" doc:id="9d856cd1-07b4-48a3-949b-6648385437c9" config-ref="Bookstore_Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM books]]></db:sql>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="8e6982ac-23b8-4449-a992-5f9f3528a614" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+	<flow name="getBookByID" doc:id="15416323-e9c1-48be-ae36-50ae2e2d1f6e" >
+		<http:listener doc:name="Listener" doc:id="25242815-bc83-45e8-8f85-5c9b88a8c3b2" config-ref="bookstore-api-httpListenerConfig" path="/books/{id}"/>
+		<db:select doc:name="Select" doc:id="ab949230-5c8b-4f98-8fce-5b98e184abe7" config-ref="Bookstore_Database_Config">
+			<db:sql ><![CDATA[SELECT * FROM books
+WHERE id = :id]]></db:sql>
+			<db:input-parameters ><![CDATA[#[{
+	id: attributes.uriParams."id"
+}]]]></db:input-parameters>
+		</db:select>
+		<ee:transform doc:name="Transform Message" doc:id="000134aa-7183-4c5c-a82b-2cea3dc79877" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+payload]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:db="http://www.mulesoft.org/schema/mule/db"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/db http://www.mulesoft.org/schema/mule/db/current/mule-db.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+	<db:config name="Bookstore_Database_Config" doc:name="Database Config" doc:id="e584d4b6-f096-4de9-9b53-b784d7186168" >
+		<db:generic-connection url="${db.url}" driverClassName="${db.driver}" user="${db.user}" password="${db.pass}"/>
+	</db:config>
+	<configuration-properties doc:name="Configuration properties" doc:id="69290e4c-f499-45ca-81e0-bf70a2fe444d" file="config-${env}.yaml" />
+	<global-property doc:name="Global Property" doc:id="6f7e6360-d3d3-42f2-9db1-0b7c65f0f823" name="env" value="dev" />
+</mule>
